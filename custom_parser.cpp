@@ -145,10 +145,10 @@ std::ostream& operator<<(std::ostream& out, const custom_parser& parser) {
         << ANSI_COLOR_GREEN
         << parser.request_header
         << ANSI_COLOR_RESET;
-    if (!is_atty || is_plain_text(parser.request_body)) {
-        out << parser.request_body;
-    } else {
+    if (!is_atty || !is_plain_text(parser.request_body)) {
         out << ANSI_COLOR_GREEN << encode_base64(parser.request_body) << ANSI_COLOR_RESET;
+    } else {
+        out << parser.request_body;
     }
     out << std::endl
         << ANSI_COLOR_BLUE
@@ -156,10 +156,10 @@ std::ostream& operator<<(std::ostream& out, const custom_parser& parser) {
         << ANSI_COLOR_RESET;
     if (parser.response_body.empty()) {
         out << ANSI_COLOR_RED << "[empty response body]" << ANSI_COLOR_RESET;
-    } else if (!is_atty || is_plain_text(parser.response_body)) {
-        out << parser.response_body;
-    } else {
+    } else if (!is_atty || !is_plain_text(parser.response_body)) {
         out << ANSI_COLOR_GREEN << encode_base64(parser.response_body) << ANSI_COLOR_RESET;
+    } else {
+        out << parser.response_body;
     }
     return out;
 }
